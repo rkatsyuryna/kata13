@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.rk.kata</groupId>
+    <artifactId>kata13</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>ConsoleApp test</name>
+    <description>Use latest project as baseline</description>
+
+    <properties>
+        <junit.version>5.4.2</junit.version>
+        <mockito.version>3.1.0</mockito.version>
+
+        <surefire.plugin.version>3.0.0-M3</surefire.plugin.version>
+        <jacoco.plugin.version>0.8.5</jacoco.plugin.version>
+        <enforcer.plugin.version>3.0.0-M3</enforcer.plugin.version>
+        <version.plugin.version>2.7</version.plugin.version>
+        <compiler.plugin.version>3.8.1</compiler.plugin.version>
+        <shade.plugin.version>3.2.1</shade.plugin.version>
+        <javadoc.plugin.version>3.1.1</javadoc.plugin.version>
+
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>${mockito.version}</version>
+        <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>${shade.plugin.version}</version>
+                <configuration>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surefire.plugin.version}</version>
+                <configuration>
+                    <forkCount>4</forkCount>
+                    <reuseForks>false</reuseForks>
+                    <includes>
+                        <include>**/*Test.java</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/*IT.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.plugin.version}</version>
+                <configuration>
+                    <haltOnFailure>true</haltOnFailure>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>pre-unit-test</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler.plugin.version}</version>
+                <configuration>
+                    <release>11</release>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>${enforcer.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>enforce-maven-java</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>[3.5.0,)</version>
+                                </requireMavenVersion>
+                                <requireJavaVersion>
+                                    <version>11</version>
+                                </requireJavaVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>${version.plugin.version}</version>
+                <configuration>
+                    <generateBackupPoms>false</generateBackupPoms>
+                </configuration>
+            </plugin>
+
+            <!-- Generate UML diagrams in javadoc using doclet: mvn javadoc:javadoc -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${javadoc.plugin.version}</version>
+                <configuration>
+                    <doclet>nl.talsmasoftware.umldoclet.UMLDoclet</doclet>
+                    <docletArtifact>
+                        <groupId>nl.talsmasoftware</groupId>
+                        <artifactId>umldoclet</artifactId>
+                        <version>2.0.7</version>
+                    </docletArtifact>
+                    <additionalOptions>
+                        <!--<additionalOption>...</additionalOption>-->
+                    </additionalOptions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
