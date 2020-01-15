@@ -2,85 +2,23 @@ import com.rk.kata.FileUtils;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Path;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class FileUtilsTest {
 
     private final static String EMPTY_PATH = "NON EXISTING PATH";
 
     @Test
-    public void testIsValidFileForExistingFile() {
+    public void testCodeLinesPerFile() throws IOException {
         String path = getAbsolutePathTestResources("testFile.txt");
 
-        boolean validFile = FileUtils.isValidFile(path);
+        long expectedCount = FileUtils.codeLinesPerFile(Path.of(path));
 
-        assertTrue(validFile);
-    }
-
-    @Test
-    public void testIsValidFileForNonExistingFile() {
-        String path = getAbsolutePathTestResources("fake.txt");
-
-        boolean validFile = FileUtils.isValidFile(path);
-
-        assertFalse(validFile);
-    }
-
-    @Test
-    public void testIsValidFileForExistingFolder() {
-        String path = getAbsolutePathTestResources("testFolder");
-
-        boolean validFile = FileUtils.isValidFile(path);
-
-        assertFalse(validFile);
-    }
-
-    @Test
-    public void testIsValidFileForNonExistingFolder() {
-        String path = getAbsolutePathTestResources("fakeFolder");
-
-        boolean validFile = FileUtils.isValidFile(path);
-
-        assertFalse(validFile);
-    }
-
-    @Test
-    public void testIsValidFolderForExistingFolder() {
-        String path = getAbsolutePathTestResources("testFolder");
-
-        boolean validFolder = FileUtils.isValidFolder(path);
-
-        assertTrue(validFolder);
-    }
-
-    @Test
-    public void testIsValidFolderForNonExistingFolder() {
-        String path = getAbsolutePathTestResources("fakeFolder");
-
-        boolean validFolder = FileUtils.isValidFolder(path);
-
-        assertFalse(validFolder);
-    }
-
-    @Test
-    public void testIsValidFolderForExistingFile() {
-        String path = getAbsolutePathTestResources("testFile.txt");
-
-        boolean validFolder = FileUtils.isValidFolder(path);
-
-        assertFalse(validFolder);
-    }
-
-    @Test
-    public void testIsValidFolderForNonExistingFile() {
-        String path = getAbsolutePathTestResources("fileFile.txt");
-
-        boolean validFolder = FileUtils.isValidFolder(path);
-
-        assertFalse(validFolder);
+        assertEquals(expectedCount, 2);
     }
 
     private String getAbsolutePathTestResources(String resourceName) {
